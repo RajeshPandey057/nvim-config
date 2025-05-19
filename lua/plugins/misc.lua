@@ -21,6 +21,13 @@ return {
 		"folke/which-key.nvim",
 	},
 	{
+		"xeluxee/competitest.nvim",
+		dependencies = "MunifTanjim/nui.nvim",
+		config = function()
+			require("competitest").setup()
+		end,
+	},
+	{
 		-- Autoclose parentheses, brackets, quotes, etc.
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",

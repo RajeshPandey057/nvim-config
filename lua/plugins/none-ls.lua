@@ -18,6 +18,8 @@ return {
 				"shfmt", -- Shell formatter
 				"checkmake", -- linter for Makefiles
 				"ruff", -- Python linter and formatter
+				"gopls", -- Go linter and formatter
+				"clang_format", -- CPP linter and formatter
 			},
 			automatic_installation = true,
 		})
