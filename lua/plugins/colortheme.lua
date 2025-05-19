@@ -26,7 +26,12 @@ return {
 
         -- Improve start up time by caching highlights. Generate cache with :CyberdreamBuildCache and clear with :CyberdreamClearCache
         cache = false,
-
+        overrides = function(c)
+            return {
+                CursorLine = { bg = c.bg },
+                CursorLineNr = { fg = c.magenta },
+            }
+        end,
         -- Disable or enable colorscheme extensions
         extensions = {
             telescope = true,
@@ -34,8 +39,8 @@ return {
             mini = true,
         },
     },
-	config = function(_, opts)
-		require("cyberdream").setup(opts)
-		vim.cmd("colorscheme cyberdream")
-	end,
+    config = function(_, opts)
+        require("cyberdream").setup(opts)
+        vim.cmd("colorscheme cyberdream")
+    end,
 }
