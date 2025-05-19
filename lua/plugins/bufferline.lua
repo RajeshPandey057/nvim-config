@@ -4,8 +4,7 @@ return {
 		"moll/vim-bbye",
 		"nvim-tree/nvim-web-devicons",
 	},
-	config = function()
-		require("bufferline").setup({
+	opts = {
 			options = {
 				mode = "buffers", -- set to "tabs" to only show tabpages instead
 				themable = true, -- allows highlight groups to be overriden i.e. sets highlights as default
@@ -55,6 +54,5 @@ return {
 				-- indicator_selected = {},
 				-- fill = {},
 			},
-		})
-	end,
+		},
 }
