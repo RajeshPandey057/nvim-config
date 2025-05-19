@@ -28,6 +28,11 @@ return {
 		opts = {},
 	},
 	{
+		"folke/ts-comments.nvim",
+		event = "VeryLazy",
+		opts = {},
+	},
+	{
 		-- Highlight todo, notes, etc in comments
 		"folke/todo-comments.nvim",
 		event = "VimEnter",
