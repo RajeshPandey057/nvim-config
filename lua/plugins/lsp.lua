@@ -143,6 +143,11 @@ return {
 					local current = vim.diagnostic.config().virtual_text
 					vim.diagnostic.config({ virtual_text = not current })
 				end, { desc = "LSP: Toggle Inline Diagnostics" })
+
+				-- Keymap to format the current file
+				map("<leader>f", function()
+					vim.lsp.buf.format({ async = true })
+				end, "[F]ormat File")
 			end,
 		})
 
