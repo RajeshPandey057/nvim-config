@@ -153,6 +153,46 @@ Below are the custom key mappings defined in `lua/core/keymaps.lua`:
 | n | `<leader>id` | Toggle inline diagnostics | Toggle inline diagnostics |
 | n | `<leader>f` | Format file | Format current file |
 
+## Autocompletion
+
+This config uses **nvim-cmp** for autocompletion, with support for LSP, buffer, path, and snippets via LuaSnip.
+
+**Features:**
+
+- Completion from LSP, buffer, file paths, and snippets.
+- Snippet expansion and navigation (LuaSnip).
+- Icons for completion kinds.
+- Customizable keymaps.
+
+**Keymaps:**
+| Mode | Key | Action/Command | Description |
+|------|-------------|-------------------------------|-----------------------------------|
+| i/s | `<Tab>` | Next completion/snippet field | Select next item or jump in snippet |
+| i/s | `<S-Tab>` | Previous completion/snippet | Select previous item or jump back in snippet |
+| i/s | `<C-n>` | Next completion item | Select next item |
+| i/s | `<C-p>` | Previous completion item | Select previous item |
+| i/s | `<C-y>` | Confirm completion | Accept selected completion |
+| i/s | `<C-Space>` | Trigger completion menu | Manually open completion menu |
+| i/s | `<C-l>` | Jump to next snippet field | Move to next snippet placeholder |
+| i/s | `<C-h>` | Jump to previous snippet field| Move to previous snippet placeholder |
+| i/s | `<C-b>` | Scroll docs up | Scroll documentation up |
+| i/s | `<C-f>` | Scroll docs down | Scroll documentation down |
+
+**Snippets:**
+
+- Uses LuaSnip and [friendly-snippets](https://github.com/rafamadriz/friendly-snippets) for a wide range of language snippets.
+- You can add your own snippets in Lua or load VSCode-style snippets.
+
+**Customization:**
+
+- Change completion sources, icons, and formatting in `lua/plugins/autocomplete.lua`.
+- For more info, see [`nvim-cmp`](https://github.com/hrsh7th/nvim-cmp) and [`LuaSnip`](https://github.com/L3MON4D3/LuaSnip).
+
+**Troubleshooting:**
+
+- If completions/snippets don’t work, check plugin installation and ensure LSP servers are running.
+- For snippet expansion, make sure LuaSnip and friendly-snippets are installed.
+
 ---
 
 ## Recommended Fonts & Terminal
