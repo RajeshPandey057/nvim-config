@@ -29,9 +29,49 @@ return {
 		{
 			"<F5>",
 			function()
-				require("dap").continue()
+				local dap = require("dap")
+				if dap.session() == nil then
+					local file = vim.fn.expand('%:p')
+					local ext = file:match('%.([^.]+)$')
+					if ext == "cpp" or ext == "c" then
+						local filename = vim.fn.fnamemodify(file, ':r')
+						local flags = "-std=c++20 -O2 -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -g"
+						local input = vim.fn.glob(vim.fn.expand('%:p:h') .. "/input.txt")
+						local run_cmd
+						if filename:sub(1,1) == "/" then
+							run_cmd = string.format('"%s"', filename)
+						else
+							run_cmd = string.format('./"%s"', filename)
+						end
+						if input ~= "" then
+							run_cmd = run_cmd .. " < input.txt"
+						end
+						local cmd
+						if ext == "cpp" then
+							cmd = string.format('g++-15 "%s" -o "%s" %s', file, filename, flags)
+						else
+							cmd = string.format('gcc-15 "%s" -o "%s" %s', file, filename, flags)
+						end
+						vim.fn.system(cmd)
+						if vim.v.shell_error == 0 then
+							dap.run({
+								type = ext == "cpp" and "codelldb" or "cppdbg",
+								request = "launch",
+								program = filename,
+								cwd = vim.fn.getcwd(),
+								stopOnEntry = false,
+							})
+						else
+							print("Compilation failed. Fix errors and try again.")
+						end
+					else
+						dap.continue()
+					end
+				else
+					dap.continue()
+				end
 			end,
-			desc = "Debug: Start/Continue",
+			desc = "Debug: Compile & Start/Continue (C/C++)",
 		},
 		{
 			"<F1>",

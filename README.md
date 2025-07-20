@@ -332,7 +332,7 @@ This config uses [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) f
   - If `input.txt` exists in the same directory, program reads from it.
   - If compilation fails, prints `Compilation failed` and removes the output binary.
 - **Supported extensions:** `.cpp`, `.c`
-- **Compiler:** `g++-15` for C++, `gcc` for C
+- **Compiler:** `g++-15` for C++, `gcc-15` for C
 - **Flags:** `-std=c++20 -O2 -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal`
 - **Terminal:** Uses [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) in horizontal mode only.
 
@@ -348,6 +348,30 @@ This config uses [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) f
 - If the file is not C/C++, nothing happens.
 - If compilation fails, the error is shown and the binary is removed.
 - If `input.txt` is missing, program runs without input redirection.
+
+---
+
+### Automated Debug Workflow for C/C++
+
+- **Keybinding:** `<F5>`
+- **Behavior:**
+  - For C and C++ files, pressing `<F5>` will:
+    - Compile the current file with debug flags (`-g` and strong warnings).
+    - If compilation succeeds, automatically start a new debug session (using codelldb for C++ or cppdbg for C).
+    - If a debug session is already running, `<F5>` will continue execution (step forward) as usual.
+    - If compilation fails, an error message is shown and debugging does not start.
+  - For other filetypes, `<F5>` behaves as usual (starts/continues debugging).
+
+**How to use:**
+
+1. Open a C or C++ file in Neovim.
+2. Press `<F5>` to compile and start debugging, or to continue if already debugging.
+3. If `input.txt` is present, it will be used for program input when running normally (not during debugging).
+
+**Note:**
+
+- This workflow is fully automated for C/C++ files. You do not need to manually compile before debugging.
+- For other languages, use your normal DAP workflow.
 
 ---
 
