@@ -145,5 +145,31 @@ return {
 				detached = vim.fn.has("win32") == 0,
 			},
 		})
+
+		-- C++/Rust DAP configuration (codelldb)
+		dap.adapters.codelldb = {
+			type = "server",
+			port = "${port}",
+			executable = {
+				-- Adjust the path below to where codelldb is installed by mason
+				command = vim.fn.stdpath("data") .. "/mason/bin/codelldb",
+				args = { "--port", "${port}" },
+			},
+		}
+		dap.configurations.cpp = {
+			{
+				name = "Launch file",
+				type = "codelldb",
+				request = "launch",
+				program = function()
+					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+				end,
+				cwd = "${workspaceFolder}",
+				stopOnEntry = false,
+			},
+		}
+		dap.configurations.c = dap.configurations.cpp
+		-- For Rust, you can also use codelldb
+		-- dap.configurations.rust = dap.configurations.cpp
 	end,
 }

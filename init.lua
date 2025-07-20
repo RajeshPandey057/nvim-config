@@ -44,7 +44,7 @@ require("lazy").setup({
 	require("plugins.comment"),
 	require("plugins.mini"),
 	require("plugins.noice"),
-	require("plugins.nvim-toggleterm"),
+	require("plugins.toggleterm"),
 	require("plugins.debug"),
 	-- Configure any other settings here. See the documentation for more details.
 	-- colorscheme that will be used when installing plugins.

@@ -24,7 +24,7 @@ This repository contains a modular, modern Neovim configuration designed for pro
   - `neotree.lua` — File explorer/tree.
   - `noice.lua` — UI/notifications enhancements.
   - `none-ls.lua` — Null-ls integration for formatting/linting.
-  - `nvim-toggleterm.lua` — Terminal integration.
+  - `toggleterm.lua` — Terminal integration.
   - `telescope.lua` — Fuzzy finder and picker.
   - `treesitter.lua` — Syntax highlighting and parsing.
 
@@ -192,6 +192,89 @@ This config uses **nvim-cmp** for autocompletion, with support for LSP, buffer, 
 
 - If completions/snippets don’t work, check plugin installation and ensure LSP servers are running.
 - For snippet expansion, make sure LuaSnip and friendly-snippets are installed.
+
+---
+
+## C++ Debugging (nvim-dap)
+
+This config supports C++ debugging using **nvim-dap** and the **codelldb** adapter (installed via mason-nvim-dap).
+
+**Setup:**
+
+- Make sure you have [lldb](https://lldb.llvm.org/) installed on your system.
+- `codelldb` is installed automatically by Mason.
+- The config for C++ debugging is in `lua/plugins/debug.lua`.
+
+**Keymaps:**
+| Key | Action |
+|-------------|-----------------------|
+| `<F5>` | Start/Continue |
+| `<F1>` | Step Into |
+| `<F2>` | Step Over |
+| `<F3>` | Step Out |
+| `<F7>` | Toggle DAP UI |
+| `<leader>b` | Toggle Breakpoint |
+| `<leader>B` | Set Conditional Breakpoint |
+
+**Usage:**
+
+1. Open your C++ file and compile it to an executable (e.g., `g++ main.cpp -g -o main`).
+2. In Neovim, run `:Mason` and ensure `codelldb` is installed.
+3. Set breakpoints with `<leader>b`.
+4. Start debugging with `<F5>`. When prompted, enter the path to your executable.
+5. Use `<F1>`, `<F2>`, `<F3>` to step through code. Toggle the DAP UI with `<F7>`.
+
+**Advanced:**
+
+- You can customize launch configurations in `lua/plugins/debug.lua`.
+- For Rust, you can use the same codelldb adapter.
+- See [`nvim-dap`](https://github.com/mfussenegger/nvim-dap) and [`nvim-dap-ui`](https://github.com/rcarriga/nvim-dap-ui) for more info.
+
+**Troubleshooting:**
+
+- If debugging doesn't start, check that your executable is compiled with debug symbols (`-g`).
+- Make sure `codelldb` is installed and executable (see `:Mason`).
+- For adapter errors, check the path in the config and your system's lldb installation.
+
+---
+
+## Terminal Integration (`toggleterm.nvim`)
+
+This config uses [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) for seamless terminal management in Neovim.
+
+**Features:**
+
+- Toggle terminal with `<leader>tt`
+- Supports horizontal, vertical, floating, and tab terminals
+- Persistent terminal sessions
+- Custom shell and appearance options
+
+**Keymaps:**
+| Mode | Key | Action/Command | Description |
+|------|---------------|----------------|----------------------------|
+| n | `<leader>tt` | ToggleTerm | Toggle floating terminal |
+| t | `<esc>` | `<C-\><C-n>` | Exit terminal mode |
+| t | `jk` | `<C-\><C-n>` | Exit terminal mode |
+| t | `<C-h>` | `wincmd h` | Move to left split |
+| t | `<C-j>` | `wincmd j` | Move to below split |
+| t | `<C-k>` | `wincmd k` | Move to above split |
+| t | `<C-l>` | `wincmd l` | Move to right split |
+| t | `<C-w>` | `<C-\><C-n><C-w>` | Window command in terminal |
+
+**Usage:**
+
+- Press `<leader>tt` in normal mode to toggle a floating terminal.
+- To close a floating terminal: press `<esc>` or `jk` to exit terminal mode, then use `:q` or click the close button in the float window.
+- Use the above keymaps to navigate and exit terminal mode easily.
+- Customize shell and appearance in `lua/plugins/toggleterm.lua`.
+- Open multiple terminals with counts: `2<leader>tt` for terminal 2, etc.
+- Use `:TermExec cmd="your_command"` to run commands in a new terminal.
+
+**Advanced:**
+
+- Create custom terminals for tools like lazygit, htop, etc.
+- Send lines or selections to the terminal with plugin commands.
+- See the [toggleterm.nvim docs](https://github.com/akinsho/toggleterm.nvim#usage) for more features.
 
 ---
 
