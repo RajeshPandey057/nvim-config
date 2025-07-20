@@ -158,7 +158,7 @@ return {
 		}
 		dap.configurations.cpp = {
 			{
-				name = "Launch file",
+				name = "Launch file (codelldb)",
 				type = "codelldb",
 				request = "launch",
 				program = function()
@@ -167,9 +167,35 @@ return {
 				cwd = "${workspaceFolder}",
 				stopOnEntry = false,
 			},
+			{
+				name = "Launch file (cppdbg)",
+				type = "cppdbg",
+				request = "launch",
+				program = function()
+					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+				end,
+				cwd = "${workspaceFolder}",
+				stopAtEntry = true,
+				MIMode = "gdb",
+				miDebuggerPath = "/usr/bin/gdb",
+				setupCommands = {
+					{
+						text = "-enable-pretty-printing",
+						description = "enable pretty printing",
+						ignoreFailures = false,
+					},
+				},
+			},
 		}
 		dap.configurations.c = dap.configurations.cpp
 		-- For Rust, you can also use codelldb
 		-- dap.configurations.rust = dap.configurations.cpp
+
+		-- Microsoft cppdbg adapter (VSCode cpptools)
+		dap.adapters.cppdbg = {
+			id = "cppdbg",
+			type = "executable",
+			command = vim.fn.expand("~/.vscode/extensions/ms-vscode.cpptools-1.26.3-darwin-arm64/debugAdapters/bin/OpenDebugAD7"),
+		}
 	end,
 }

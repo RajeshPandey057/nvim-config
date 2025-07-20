@@ -197,13 +197,19 @@ This config uses **nvim-cmp** for autocompletion, with support for LSP, buffer, 
 
 ## C++ Debugging (nvim-dap)
 
-This config supports C++ debugging using **nvim-dap** and the **codelldb** adapter (installed via mason-nvim-dap).
+This config supports C++ debugging using **nvim-dap** with two adapters:
+
+- **codelldb** (installed via mason-nvim-dap)
+- **cppdbg** (Microsoft VSCode C++ extension)
 
 **Setup:**
 
-- Make sure you have [lldb](https://lldb.llvm.org/) installed on your system.
-- `codelldb` is installed automatically by Mason.
-- The config for C++ debugging is in `lua/plugins/debug.lua`.
+- For codelldb: Make sure you have [lldb](https://lldb.llvm.org/) installed. `codelldb` is installed automatically by Mason.
+- For cppdbg: Download the [VSCode cpptools extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) if you haven't already. Set the path to `OpenDebugAD7` in your config (see `lua/plugins/debug.lua`).
+  - On macOS, the path is usually:
+    `~/.vscode/extensions/ms-vscode.cpptools-<version>-darwin-arm64/debugAdapters/bin/OpenDebugAD7`
+  - For your setup, use:
+    `~/.vscode/extensions/ms-vscode.cpptools-1.26.3-darwin-arm64/debugAdapters/bin/OpenDebugAD7`
 
 **Keymaps:**
 | Key | Action |
@@ -219,22 +225,59 @@ This config supports C++ debugging using **nvim-dap** and the **codelldb** adapt
 **Usage:**
 
 1. Open your C++ file and compile it to an executable (e.g., `g++ main.cpp -g -o main`).
-2. In Neovim, run `:Mason` and ensure `codelldb` is installed.
-3. Set breakpoints with `<leader>b`.
-4. Start debugging with `<F5>`. When prompted, enter the path to your executable.
-5. Use `<F1>`, `<F2>`, `<F3>` to step through code. Toggle the DAP UI with `<F7>`.
+2. In Neovim, run `:Mason` and ensure `codelldb` is installed (for codelldb adapter).
+3. For cppdbg, download and extract VSCode cpptools, then set the path to `OpenDebugAD7` in your config.
+4. Set breakpoints with `<leader>b`.
+5. Start debugging with `<F5>`. When prompted, enter the path to your executable.
+6. Use `<F1>`, `<F2>`, `<F3>` to step through code. Toggle the DAP UI with `<F7>`.
 
-**Advanced:**
+**Example Configurations:**
 
-- You can customize launch configurations in `lua/plugins/debug.lua`.
-- For Rust, you can use the same codelldb adapter.
-- See [`nvim-dap`](https://github.com/mfussenegger/nvim-dap) and [`nvim-dap-ui`](https://github.com/rcarriga/nvim-dap-ui) for more info.
+- **codelldb**:
+
+```lua
+{
+  name = "Launch file (codelldb)",
+  type = "codelldb",
+  request = "launch",
+  program = function()
+    return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+  end,
+  cwd = "${workspaceFolder}",
+  stopOnEntry = false,
+}
+```
+
+- **cppdbg**:
+
+```lua
+{
+  name = "Launch file (cppdbg)",
+  type = "cppdbg",
+  request = "launch",
+  program = function()
+    return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+  end,
+  cwd = "${workspaceFolder}",
+  stopAtEntry = true,
+  MIMode = "gdb",
+  miDebuggerPath = "/usr/bin/gdb",
+  setupCommands = {
+    {
+      text = "-enable-pretty-printing",
+      description = "enable pretty printing",
+      ignoreFailures = false
+    },
+  },
+}
+```
 
 **Troubleshooting:**
 
 - If debugging doesn't start, check that your executable is compiled with debug symbols (`-g`).
-- Make sure `codelldb` is installed and executable (see `:Mason`).
-- For adapter errors, check the path in the config and your system's lldb installation.
+- For codelldb, make sure it is installed and executable (see `:Mason`).
+- For cppdbg, ensure you have set the correct path to `OpenDebugAD7` and have gdb installed.
+- For adapter errors, check the path in the config and your system's debugger installation.
 
 ---
 
@@ -275,6 +318,36 @@ This config uses [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) f
 - Create custom terminals for tools like lazygit, htop, etc.
 - Send lines or selections to the terminal with plugin commands.
 - See the [toggleterm.nvim docs](https://github.com/akinsho/toggleterm.nvim#usage) for more features.
+
+---
+
+## Competitive Programming Workflow
+
+### Compile & Run C/C++ Files
+
+- **Keybinding:** `<leader>rr`
+- **Behavior:**
+  - Compiles the current C/C++ file with strong flags.
+  - If compilation succeeds, runs the output binary in a floating terminal.
+  - If `input.txt` exists in the same directory, program reads from it.
+  - If compilation fails, prints `Compilation failed` and removes the output binary.
+- **Supported extensions:** `.cpp`, `.c`
+- **Compiler:** `g++-15` for C++, `gcc` for C
+- **Flags:** `-std=c++20 -O2 -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal`
+- **Terminal:** Uses [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) in horizontal mode only.
+
+#### Example Usage
+
+1. Open a C++ or C file in Neovim.
+2. Press `<leader>rr` to compile and run.
+3. If `input.txt` is present, it will be used as input.
+4. Output and errors are shown in a horizontal terminal.
+
+#### Troubleshooting
+
+- If the file is not C/C++, nothing happens.
+- If compilation fails, the error is shown and the binary is removed.
+- If `input.txt` is missing, program runs without input redirection.
 
 ---
 

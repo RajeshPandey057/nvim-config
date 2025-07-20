@@ -26,5 +26,41 @@ return {
       vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
     end
     vim.cmd('autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()')
+
+    -- Compile and run current C/C++ file, horizontal terminal, no debug logs
+    vim.keymap.set('n', '<leader>rr', function()
+      local file = vim.fn.expand('%:p')
+      local ext = file:match('%.([^.]+)$')
+      local filename = vim.fn.fnamemodify(file, ':r')
+      local flags = "-std=c++20 -O2 -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal"
+      local input = vim.fn.glob(vim.fn.expand('%:p:h') .. "/input.txt")
+      local run_cmd
+      if filename:sub(1,1) == "/" then
+        run_cmd = string.format('"%s"', filename)
+      else
+        run_cmd = string.format('./"%s"', filename)
+      end
+      if input ~= "" then
+        run_cmd = run_cmd .. " < input.txt"
+      end
+      local cmd
+      if ext == "cpp" then
+        cmd = string.format('g++-15 "%s" -o "%s" %s && %s || echo Compilation failed; rm -f "%s"', file, filename, flags, run_cmd, filename)
+      elseif ext == "c" then
+        cmd = string.format('gcc "%s" -o "%s" && %s || echo Compilation failed; rm -f "%s"', file, filename, run_cmd, filename)
+      else
+        return
+      end
+      local ok, term = pcall(function()
+        return require('toggleterm.terminal').Terminal:new({
+          cmd = cmd,
+          direction = "horizontal",
+          close_on_exit = false,
+        })
+      end)
+      if ok and term then
+        term:toggle()
+      end
+    end, {desc = "Compile & Run (C/C++)"})
   end,
 }
