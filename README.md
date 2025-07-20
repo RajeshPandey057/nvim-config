@@ -403,3 +403,58 @@ This config uses [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) f
 ---
 
 Feel free to fork and customize this config for your workflow!
+
+### Ghostty Terminal Keymaps & Config
+
+Your Ghostty config (priority):
+
+```
+shell-integration = zsh
+font-family = FiraCode Nerd Font
+background-opacity = 0.8
+background-blur = true
+theme = dark:cyberdream,light:cyberdream-light
+mouse-hide-while-typing = true
+scrollback-limit = 1000000
+
+keybind = ctrl+n=new_window
+
+keybind = super+h=goto_split:left
+keybind = super+j=goto_split:bottom
+keybind = super+k=goto_split:top
+keybind = super+l=goto_split:right
+
+keybind = ctrl+a>h=new_split:left
+keybind = ctrl+a>j=new_split:down
+keybind = ctrl+a>k=new_split:up
+keybind = ctrl+a>l=new_split:right
+keybind = ctrl+a>f=toggle_split_zoom
+
+keybind = ctrl+a>n=next_tab
+keybind = ctrl+a>p=previous_tab
+
+keybind = super+r=reload_config
+
+window-save-state = always
+```
+
+**Basic Ghostty keymaps:**
+| Keybinding | Action |
+|--------------------|----------------------|
+| `Ctrl+N` | New window |
+| `Ctrl+T` | New tab |
+| `Ctrl+W` | Close tab |
+| `Ctrl+A > N/P` | Next/Previous tab |
+| `Super+H/J/K/L` | Move to split (left/bottom/top/right) |
+| `Ctrl+A > H/J/K/L` | Create split (left/down/up/right) |
+| `Ctrl+A > F` | Toggle split zoom |
+| `Super+R` | Reload config |
+
+- Font: FiraCode Nerd Font
+- Theme: cyberdream (dark/light)
+- Shell: zsh
+- Scrollback: 1,000,000 lines
+- Mouse hides while typing
+- Window state always saved
+
+For more options, see [Ghostty docs](https://ghostty.org/docs/config).
