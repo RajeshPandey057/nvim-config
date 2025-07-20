@@ -52,6 +52,21 @@ return {
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 			callback = function(event)
+				local bufnr = event.buf
+				local client = vim.lsp.get_client_by_id(event.data.client_id)
+				local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+				if ft == "cpp" and client and client.name == "clangd" then
+					local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+					for _, line in ipairs(lines) do
+						if line:find("bits") then
+							vim.schedule(function()
+								vim.lsp.buf_detach_client(bufnr, client.id)
+							end)
+							return
+						end
+					end
+				end
+
 				-- NOTE: Remember that Lua is a real programming language, and as such it is possible
 				-- to define small helper and utility functions so you don't have to repeat yourself.
 				--
