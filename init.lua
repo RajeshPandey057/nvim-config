@@ -46,6 +46,7 @@ require("lazy").setup({
 	require("plugins.noice"),
 	require("plugins.toggleterm"),
 	require("plugins.debug"),
+	require("plugins.luasnip"),
 	-- Configure any other settings here. See the documentation for more details.
 	-- colorscheme that will be used when installing plugins.
 	install = { colorscheme = { "cyberdream" } },

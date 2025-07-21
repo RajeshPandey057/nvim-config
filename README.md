@@ -458,3 +458,35 @@ window-save-state = always
 - Window state always saved
 
 For more options, see [Ghostty docs](https://ghostty.org/docs/config).
+
+---
+
+## Custom C++ Template Snippet (LuaSnip)
+
+This config includes a custom C++ template snippet using [LuaSnip](https://github.com/L3MON4D3/LuaSnip).
+
+**Setup:**
+
+- The snippet is defined in `lua/plugins/luasnip.lua`.
+- It is loaded automatically via lazy.nvim (see `init.lua`).
+
+**Usage:**
+
+1. Open a `.cpp` file in Neovim.
+2. In insert mode, type `cpp` and expand the snippet using one of these keys:
+   - `<leader><Tab>` (default: `<Space><Tab>`, recommended to avoid conflicts)
+   - `<C-K>` (Ctrl+K)
+3. The full C++ template will be inserted, and your cursor will be placed at the end of the template (after `return 0;` in `main()`).
+
+**Editing the Snippet:**
+
+- To change the template, edit the snippet in `lua/plugins/luasnip.lua`.
+- The snippet uses LuaSnip’s `t` (text_node) for static text and `i(0)` to place the cursor at the end.
+
+**Troubleshooting:**
+
+- If the snippet does not expand, ensure:
+  - LuaSnip is installed (`:Lazy` should show it).
+  - You are in a `.cpp` file and in insert mode.
+  - You are using the correct trigger key (see above).
+- If you see errors about curly braces, make sure the snippet uses `t{...}` and not `fmt` for static templates.
