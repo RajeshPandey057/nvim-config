@@ -48,9 +48,9 @@ return {
 						end
 						local cmd
 						if ext == "cpp" then
-							cmd = string.format('g++-15 "%s" -o "%s" %s', file, filename, flags)
+							cmd = string.format('clang++ "%s" -o "%s" %s', file, filename, flags)
 						else
-							cmd = string.format('gcc-15 "%s" -o "%s" %s', file, filename, flags)
+							cmd = string.format('clang "%s" -o "%s" %s', file, filename, flags)
 						end
 						vim.fn.system(cmd)
 						if vim.v.shell_error == 0 then

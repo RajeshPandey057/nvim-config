@@ -45,9 +45,9 @@ return {
       end
       local cmd
       if ext == "cpp" then
-        cmd = string.format('g++-15 "%s" -o "%s" %s && %s || echo Compilation failed; rm -f "%s"', file, filename, flags, run_cmd, filename)
+        cmd = string.format('clang++ "%s" -o "%s" %s && %s || echo Compilation failed; rm -f "%s"', file, filename, flags, run_cmd, filename)
       elseif ext == "c" then
-        cmd = string.format('gcc-15 "%s" -o "%s" && %s || echo Compilation failed; rm -f "%s"', file, filename, run_cmd, filename)
+        cmd = string.format('clang "%s" -o "%s" && %s || echo Compilation failed; rm -f "%s"', file, filename, run_cmd, filename)
       else
         return
       end

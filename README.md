@@ -224,7 +224,7 @@ This config supports C++ debugging using **nvim-dap** with two adapters:
 
 **Usage:**
 
-1. Open your C++ file and compile it to an executable (e.g., `g++ main.cpp -g -o main`).
+1. Open your C++ file and compile it to an executable (e.g., `clang++ main.cpp -g -o main`).
 2. In Neovim, run `:Mason` and ensure `codelldb` is installed (for codelldb adapter).
 3. For cppdbg, download and extract VSCode cpptools, then set the path to `OpenDebugAD7` in your config.
 4. Set breakpoints with `<leader>b`.
@@ -332,7 +332,7 @@ This config uses [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) f
   - If `input.txt` exists in the same directory, program reads from it.
   - If compilation fails, prints `Compilation failed` and removes the output binary.
 - **Supported extensions:** `.cpp`, `.c`
-- **Compiler:** `g++-15` for C++, `gcc-15` for C
+- **Compiler:** `clang++` for C++, `clang` for C
 - **Flags:** `-std=c++20 -O2 -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal`
 - **Terminal:** Uses [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) in horizontal mode only.
 
@@ -433,7 +433,7 @@ keybind = ctrl+a>f=toggle_split_zoom
 keybind = ctrl+a>n=next_tab
 keybind = ctrl+a>p=previous_tab
 
-keybind = super+r=reload_config
+keybind = super=r=reload_config
 
 window-save-state = always
 ```
