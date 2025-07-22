@@ -32,7 +32,7 @@ return {
       local file = vim.fn.expand('%:p')
       local ext = file:match('%.([^.]+)$')
       local filename = vim.fn.fnamemodify(file, ':r')
-      local flags = "-std=c++20 -O2 -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal"
+      local flags = "-std=c++20 -O2 -w" -- suppress all warnings
       local input = vim.fn.glob(vim.fn.expand('%:p:h') .. "/input.txt")
       local run_cmd
       if filename:sub(1,1) == "/" then
@@ -47,7 +47,7 @@ return {
       if ext == "cpp" then
         cmd = string.format('clang++ "%s" -o "%s" %s && %s || echo Compilation failed; rm -f "%s"', file, filename, flags, run_cmd, filename)
       elseif ext == "c" then
-        cmd = string.format('clang "%s" -o "%s" && %s || echo Compilation failed; rm -f "%s"', file, filename, run_cmd, filename)
+        cmd = string.format('clang "%s" -o "%s" -w && %s || echo Compilation failed; rm -f "%s"', file, filename, run_cmd, filename)
       else
         return nil
       end
