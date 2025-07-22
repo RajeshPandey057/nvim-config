@@ -54,6 +54,20 @@ return {
       return cmd
     end
 
+    local function reload_all_txt_buffers()
+      for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) then
+          local name = vim.api.nvim_buf_get_name(buf)
+          if name:sub(-4) == ".txt" then
+            vim.api.nvim_buf_call(buf, function()
+              vim.cmd('checktime')
+              vim.cmd('edit!')
+            end)
+          end
+        end
+      end
+    end
+
     -- <leader>rt: Compile & Run and open terminal
     vim.keymap.set('n', '<leader>rt', function()
       local cmd = get_compile_run_cmd()
@@ -68,15 +82,16 @@ return {
       if ok and term then
         term:toggle()
       end
+      reload_all_txt_buffers()
     end, {desc = "Compile & Run (C/C++) in terminal"})
 
     -- <leader>rr: Compile & Run in background (no terminal)
     vim.keymap.set('n', '<leader>rr', function()
       local cmd = get_compile_run_cmd()
       if not cmd then return end
-      -- Run in background, print output to message
       local output = vim.fn.system(cmd)
       vim.notify(output, vim.log.levels.INFO, {title = 'Compile & Run'})
+      reload_all_txt_buffers()
     end, {desc = "Compile & Run (C/C++) in background"})
   end,
 }
