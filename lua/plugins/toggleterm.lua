@@ -28,7 +28,7 @@ return {
     vim.cmd('autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()')
 
     -- Compile and run current C/C++ file, horizontal terminal, no debug logs
-    vim.keymap.set('n', '<leader>rr', function()
+    local function get_compile_run_cmd()
       local file = vim.fn.expand('%:p')
       local ext = file:match('%.([^.]+)$')
       local filename = vim.fn.fnamemodify(file, ':r')
@@ -49,8 +49,15 @@ return {
       elseif ext == "c" then
         cmd = string.format('clang "%s" -o "%s" && %s || echo Compilation failed; rm -f "%s"', file, filename, run_cmd, filename)
       else
-        return
+        return nil
       end
+      return cmd
+    end
+
+    -- <leader>rt: Compile & Run and open terminal
+    vim.keymap.set('n', '<leader>rt', function()
+      local cmd = get_compile_run_cmd()
+      if not cmd then return end
       local ok, term = pcall(function()
         return require('toggleterm.terminal').Terminal:new({
           cmd = cmd,
@@ -61,6 +68,15 @@ return {
       if ok and term then
         term:toggle()
       end
-    end, {desc = "Compile & Run (C/C++)"})
+    end, {desc = "Compile & Run (C/C++) in terminal"})
+
+    -- <leader>rr: Compile & Run in background (no terminal)
+    vim.keymap.set('n', '<leader>rr', function()
+      local cmd = get_compile_run_cmd()
+      if not cmd then return end
+      -- Run in background, print output to message
+      local output = vim.fn.system(cmd)
+      vim.notify(output, vim.log.levels.INFO, {title = 'Compile & Run'})
+    end, {desc = "Compile & Run (C/C++) in background"})
   end,
 }
